@@ -27,7 +27,7 @@ body {
 }
 
 /* Frases flotantes */
-.floating-phrase {
+. {
   position: absolute;
   color: #fff;
   font-size: 20px;
@@ -280,6 +280,7 @@ body.night-mode #night-mode-toggle {
 }
 
 .floating-phrase {
+  font-family: 'Poppins', sans-serif;
   position: absolute;
   color: #fff; /* letras blancas para máxima visibilidad */
   font-size: 22px;
@@ -391,7 +392,7 @@ body.night-mode .dedication {
 #final-message {
   display: none;
   position: fixed;
-  top: 33%;
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 28px;
@@ -434,3 +435,4 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
