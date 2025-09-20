@@ -36,10 +36,25 @@
 <div id="final-message">Te amo con todo mi corazón 💖</div>
 
   <script src="script.js"></script>
+<audio id="bg-music" autoplay loop hidden>
+  <source src="ambiente.mp3" type="audio/mpeg">
+  Tu navegador no soporta audio HTML5.
+</audio>
+
+<script>
+  window.addEventListener('click', () => {
+    const music = document.getElementById('bg-music');
+    music.volume = 0.5; // 🔊 volumen al 50%
+    if (music.paused) {
+      music.play();
+    }
+  });
+</script>
 
 
 </body>
 </html>
+
 
 
 
