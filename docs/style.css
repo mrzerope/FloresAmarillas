@@ -291,36 +291,16 @@ body.night-mode #night-mode-toggle {
   pointer-events: none;
   animation: floatUp 5s ease-out forwards;
 
-  /* 👇 contorno negro alrededor para máxima legibilidad */
+  /* 👇 contorno negro más nítido */
+  -webkit-text-stroke: 1px #000; /* borde negro real */
   text-shadow: 
-    -2px -2px 3px #000,
-     2px -2px 3px #000,
-    -2px  2px 3px #000,
-     2px  2px 3px #000,
-     0    0   8px rgba(255,255,255,0.6); /* brillito extra */
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000,
+     0    0   6px rgba(255,255,255,0.6); /* brillito extra */
 }
 
-
-/* Blanco con borde negro */
-.floating-phrase.white-glow {
-  color: #fff;
-  text-shadow: 
-    -2px -2px 3px #000,
-     2px -2px 3px #000,
-    -2px  2px 3px #000,
-     2px  2px 3px #000,
-     0    0   8px rgba(255,255,255,0.6);
-}
-
-/* Dorado brillante */
-.floating-phrase.gold-glow {
-  color: #ffd700;
-  text-shadow: 
-    0 0 5px #000,
-    0 0 10px #ffcc00,
-    0 0 20px #ffcc00,
-    0 0 30px #ffea80;
-}
 
 
 .petal.falling {
@@ -438,6 +418,7 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
 
 
 
