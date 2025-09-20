@@ -150,6 +150,9 @@ window.onload = () => {
     }, 300);
 
     animate();
+    
+};
+
    
 
 
