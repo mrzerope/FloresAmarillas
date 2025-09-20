@@ -93,14 +93,7 @@ class Particle {
         ctx.closePath();
     }
 }
-<body>
-
-    document.getElementById("secret-heart").onclick = () => {
-  const msg = document.getElementById("secret-message");
-  msg.style.display = "block";
-};
-
-    </body>    
+   
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particlesArray.length; i++) {
