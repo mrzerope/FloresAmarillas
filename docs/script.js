@@ -1,17 +1,17 @@
 
 const phrases = [
     "Eres mi sol.",
-    "Contigo todo es mejor.",
+    "Mi vida brilla contigo.",
     "Mi lugar favorito es a tu lado.",
-    "Gracias por ser mi aventura.",
+    "Eres mi paz y mi locura.",
     "Juntos somos magia.",
     "Te elijo cada día.",
     "Nuestro amor es mi refugio.",
-    "Eres mi sueño hecho realidad.",
+    "Cada día contigo es un regalo.",
     "A tu lado, soy más fuerte.",
     "Para siempre y un día más.",
-    "Creas un mundo nuevo para mí.",
-    "Eres mi canción favorita."
+    "El mundo es perfecto contigo.",
+    "A tu lado, todo florece."
 ];
 
 let phraseIndex = 0;
