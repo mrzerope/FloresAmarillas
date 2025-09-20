@@ -105,6 +105,43 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+function createShootingStar() {
+  const star = document.createElement("div");
+  star.classList.add("shooting-star");
+  star.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(star);
+
+  star.addEventListener("animationend", () => star.remove());
+}
+
+// Cada cierto tiempo aparece una estrella fugaz
+setInterval(() => {
+  if (Math.random() > 0.7) { // probabilidad del 30%
+    createShootingStar();
+  }
+}, 4000);
+
+// Controlar volumen de YouTube con API
+let tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+let firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+let player;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('ytplayer', {
+    events: {
+      onReady: (event) => {
+        event.target.setVolume(20); // volumen al 20%
+      }
+    }
+  });
+}
+
+
+
+
+
 window.onload = () => {
     createPetals();
 
@@ -116,5 +153,15 @@ window.onload = () => {
 
     animate();
 
+    // 🎶 Control del audio ambiente
+    const ambiente = document.getElementById("ambiente");
+    if (ambiente) {
+        ambiente.volume = 0.2; // volumen bajito
+    }
 };
-                            
+
+
+if (!document.querySelector('.petal-front')) {
+  document.getElementById('final-message').style.display = 'block';
+}
+
