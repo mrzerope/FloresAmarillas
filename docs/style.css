@@ -10,13 +10,11 @@ body {
   font-family: 'Playfair Display', serif;
   transition: background 1s ease;
 
-  /* cursor especial */
-  cursor: url('https://cur.cursors-4u.net/nature/nat-1/nat56.cur'), auto;
 }
 
-body.night-mode {
-  background: linear-gradient(to top, #020111 0%, #19163a 70%);
-}
+
+ background: linear-gradient(to top, #020111 0%, #19163a 70%);
+
 
 #stars {
   position: fixed;
@@ -217,14 +215,15 @@ body.night-mode #night-mode-toggle {
 
 .floating-phrase {
   position: absolute;
-  color: #911708;
-  font-size: 22px;
+  color: #ffffff;
+  font-size: 20px;
   font-style: italic;
+  font-weight: bold;
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
   animation: floatUp 3s ease-out forwards;
-  transition: color 1s ease;
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
 }
 
 .petal.falling {
@@ -267,12 +266,15 @@ body.night-mode #night-mode-toggle {
 
 /* Dedicatoria */
 .dedication {
-  position: fixed;
+ position: fixed;
   bottom: 20px;
-  font-size: 20px;
+  font-size: 22px;
   font-style: italic;
-  color: #5a381f;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0,0,0,0.9);
+  text-align: center;
+  width: 100%;
+  padding: 0 10px;
 }
 
 body.night-mode .dedication {
