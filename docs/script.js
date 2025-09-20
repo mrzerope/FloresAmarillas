@@ -140,8 +140,6 @@ function onYouTubeIframeAPIReady() {
 
 
 
-
-
 window.onload = () => {
     createPetals();
 
@@ -152,9 +150,7 @@ window.onload = () => {
     }, 300);
 
     animate();
-
-    }
-};
+   
 
 
 if (!document.querySelector('.petal-front')) {
