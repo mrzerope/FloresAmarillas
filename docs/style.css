@@ -289,7 +289,7 @@ body.night-mode #night-mode-toggle {
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
-  animation: floatUp 5s ease-out forwards;
+  animation: floatUp 4s ease-out forwards;
 
   /* 👇 contorno negro más nítido */
   -webkit-text-stroke: 1px #000; /* borde negro real */
@@ -418,6 +418,7 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
 
 
 
