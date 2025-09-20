@@ -282,7 +282,7 @@ body.night-mode #night-mode-toggle {
 .floating-phrase {
   font-family: 'Poppins', sans-serif;
   position: absolute;
-  color: #fff; /* letras blancas para máxima visibilidad */
+  color: #fff; /* letras blancas */
   font-size: 22px;
   font-style: italic;
   font-weight: bold;
@@ -291,14 +291,15 @@ body.night-mode #night-mode-toggle {
   pointer-events: none;
   animation: floatUp 5s ease-out forwards;
 
-  /* 👇 borde oscuro para contraste */
+  /* 👇 contorno negro alrededor para máxima legibilidad */
   text-shadow: 
-    -1px -1px 2px #000,
-     1px -1px 2px #000,
-    -1px  1px 2px #000,
-     1px  1px 2px #000;
-     0    0   8px rgba(255,255,255,0.6); /* un brillito suave */
+    -2px -2px 3px #000,
+     2px -2px 3px #000,
+    -2px  2px 3px #000,
+     2px  2px 3px #000,
+     0    0   8px rgba(255,255,255,0.6); /* brillito extra */
 }
+
 
 /* Blanco con borde negro */
 .floating-phrase.white-glow {
@@ -435,5 +436,6 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
 
 
