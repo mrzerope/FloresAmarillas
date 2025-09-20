@@ -391,9 +391,10 @@ body.night-mode .dedication {
 }
 
 #final-message {
+  font-family: 'Poppins', sans-serif;
   display: none;
   position: fixed;
-  top: 20%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 28px;
@@ -436,6 +437,7 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
 
 
 
