@@ -17,7 +17,70 @@ body.night-mode {
   background: linear-gradient(to top, #020111 0%, #19163a 70%);
 }
 
+/* Ajustes generales */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Dancing Script', cursive;
+  overflow-x: hidden; /* Evita scroll lateral */
+  background: linear-gradient(to bottom, #0d1b2a, #1b263b); /* noche */
+}
 
+/* Frases flotantes */
+.floating-phrase {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+  animation: floatUp 3s ease-out forwards;
+}
+
+/* Animación frases */
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-80px); opacity: 0; }
+}
+
+/* Texto fijo al pie */
+footer {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
+}
+
+/* Girasol responsivo */
+canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* 🌐 Ajustes para móviles */
+@media (max-width: 768px) {
+  .floating-phrase {
+    font-size: 16px; /* frases más chicas en móvil */
+  }
+
+  footer {
+    font-size: 14px;
+    bottom: 5px;
+    padding: 0 10px;
+  }
+
+  canvas {
+    width: 90% !important; /* girasol más pequeño y centrado */
+  }
+}
 
 #stars {
   position: fixed;
