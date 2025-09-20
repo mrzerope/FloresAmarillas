@@ -153,10 +153,6 @@ window.onload = () => {
 
     animate();
 
-    // 🎶 Control del audio ambiente
-    const ambiente = document.getElementById("ambiente");
-    if (ambiente) {
-        ambiente.volume = 0.2; // volumen bajito
     }
 };
 
