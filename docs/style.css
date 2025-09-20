@@ -363,6 +363,7 @@ body.night-mode #night-mode-toggle {
 
 .dedication {
   position: fixed;
+  font-family: 'Poppins', sans-serif;
   bottom: 20px;
   font-size: 24px;
   font-style: italic;
@@ -397,7 +398,7 @@ body.night-mode .dedication {
   top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 28px;
+  font-size: 23px;
   color: #fff;
   text-shadow: 0 0 15px #ff4081, 0 0 25px #ff80ab;
   text-align: center;
@@ -437,6 +438,7 @@ body.night-mode #stars {
   0% { transform: translate(0,0) rotate(45deg); opacity: 1; }
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
+
 
 
 
