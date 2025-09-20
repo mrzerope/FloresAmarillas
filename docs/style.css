@@ -13,7 +13,10 @@ body {
 }
 
 
- background: linear-gradient(to top, #020111 0%, #19163a 70%);
+body.night-mode {
+  background: linear-gradient(to top, #020111 0%, #19163a 70%);
+}
+
 
 
 #stars {
@@ -281,3 +284,4 @@ body.night-mode .dedication {
   color: #f5e7c6;
   text-shadow: 0 0 6px rgba(255,255,255,0.4);
 }
+
