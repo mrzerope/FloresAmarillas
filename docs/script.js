@@ -116,16 +116,5 @@ window.onload = () => {
 
     animate();
 
-    const nightModeToggle = document.getElementById('night-mode-toggle');
-    nightModeToggle.addEventListener('click', () => {
-
-        document.body.classList.toggle('night-mode');
-
-        if (document.body.classList.contains('night-mode')) {
-            nightModeToggle.textContent = 'Modo Día ☀️';
-        } else {
-            nightModeToggle.textContent = 'Modo Noche 🌙';
-        }
-    });
 };
                             
