@@ -148,9 +148,27 @@ body {
   transform-origin: bottom center;
   border: 1px solid #d4af37;
 }
-.petal-back { width: 55px; height: 130px; background: #ffc107; z-index: 11; border-radius: 50% 50% 0 0; }
-.petal-middle { width: 45px; height: 110px; background: #ffca28; z-index: 12; border-radius: 50% 50% 0 0; }
-.petal-front { width: 35px; height: 90px; background: #ffd54f; z-index: 13; border-radius: 50% 50% 0 0; }
+.petal-back {
+  width: 55px;
+  height: 130px;
+  background: linear-gradient(to bottom, #ffdb4d, #ffb300);
+  z-index: 11;
+  border-radius: 50% 50% 0 0;
+}
+.petal-middle {
+  width: 45px;
+  height: 110px;
+  background: linear-gradient(to bottom, #ffe066, #ffc107);
+  z-index: 12;
+  border-radius: 50% 50% 0 0;
+}
+.petal-front {
+  width: 35px;
+  height: 90px;
+  background: linear-gradient(to bottom, #fff176, #ffd54f);
+  z-index: 13;
+  border-radius: 50% 50% 0 0;
+}
 .petal.clickable { cursor: pointer; }
 .petal.falling {
   animation: fallAndFade 2s ease-in forwards;
