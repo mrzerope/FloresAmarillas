@@ -199,7 +199,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ============================================
-   ESTRELLAS FUGACES
+   CAMPO DE ESTRELLAS (optimizado móvil)
+   ============================================ */
+
+function generarEstrellas(cantidad) {
+    let sombras = [];
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    for (let i = 0; i < cantidad; i++) {
+        const x = Math.floor(Math.random() * w);
+        const y = Math.floor(Math.random() * h);
+        sombras.push(`${x}px ${y}px white`);
+    }
+    return sombras.join(',');
+}
+
+function inicializarEstrellas() {
+    const esMobile = window.innerWidth < 480;
+    const cantidadPequeñas = esMobile ? 80 : 150;
+    const cantidadGrandes = esMobile ? 25 : 45;
+
+    const stars = document.getElementById('stars');
+    const starsBig = document.getElementById('stars-big');
+
+    if (stars) stars.style.boxShadow = generarEstrellas(cantidadPequeñas);
+    if (starsBig) starsBig.style.boxShadow = generarEstrellas(cantidadGrandes);
+}
+
+document.addEventListener('DOMContentLoaded', inicializarEstrellas);
+
+// Regenerar si cambia el tamaño de pantalla (rotación de móvil, etc.)
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(inicializarEstrellas, 300);
+});
+
+/* ============================================
+   ESTRELLAS FUGACES (con límite para móvil)
    ============================================ */
 
 function createShootingStar() {
@@ -211,12 +248,13 @@ function createShootingStar() {
     star.addEventListener('animationend', () => star.remove(), { once: true });
 }
 
-// Crear estrellas fugaces cada cierto tiempo
 setInterval(() => {
-    if (Math.random() > 0.7) { // 30% de probabilidad
+    const esMobile = window.innerWidth < 480;
+    const probabilidad = esMobile ? 0.5 : 0.7; // menos frecuente en móvil
+    if (Math.random() > probabilidad) {
         createShootingStar();
     }
-}, 4000);
+}, window.innerWidth < 480 ? 5000 : 4000);
 
 /* ============================================
    EFECTOS DE SONIDO (Opcional)
@@ -280,12 +318,16 @@ function playRebirthSound() {
 window.addEventListener('load', () => {
     createPetals();
 
+    const esMobile = window.innerWidth < 480;
+    const intervaloParticulas = esMobile ? 500 : 300;
+    const cantidadParticulas = esMobile ? 2 : 3;
+
     // Crear partículas continuamente
     setInterval(() => {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < cantidadParticulas; i++) {
             particlesArray.push(new Particle());
         }
-    }, 300);
+    }, intervaloParticulas);
 
     // Iniciar animación del canvas
     animate();
@@ -314,61 +356,3 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-
-/* ============================================
-   GENERAR CAMPO DE ESTRELLAS (optimizado móvil)
-   ============================================ */
-
-function generarEstrellas(cantidad) {
-  let sombras = [];
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  for (let i = 0; i < cantidad; i++) {
-    const x = Math.floor(Math.random() * w);
-    const y = Math.floor(Math.random() * h);
-    sombras.push(`${x}px ${y}px white`);
-  }
-  return sombras.join(',');
-}
-
-function inicializarEstrellas() {
-  const esMobile = window.innerWidth < 480;
-  const cantidadPequeñas = esMobile ? 80 : 150;
-  const cantidadGrandes = esMobile ? 25 : 45;
-
-  const stars = document.getElementById('stars');
-  const starsBig = document.getElementById('stars-big');
-
-  if (stars) stars.style.boxShadow = generarEstrellas(cantidadPequeñas);
-  if (starsBig) starsBig.style.boxShadow = generarEstrellas(cantidadGrandes);
-}
-
-document.addEventListener('DOMContentLoaded', inicializarEstrellas);
-
-// Regenerar si cambia el tamaño de pantalla (rotación de móvil, etc.)
-let resizeTimeout;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(inicializarEstrellas, 300);
-});
-
-/* ============================================
-   ESTRELLAS FUGACES (con límite para móvil)
-   ============================================ */
-
-function createShootingStar() {
-  const star = document.createElement('div');
-  star.classList.add('shooting-star');
-  star.style.left = Math.random() * window.innerWidth + 'px';
-  document.body.appendChild(star);
-
-  star.addEventListener('animationend', () => star.remove(), { once: true });
-}
-
-setInterval(() => {
-  const esMobile = window.innerWidth < 480;
-  const probabilidad = esMobile ? 0.5 : 0.7; // menos frecuente en móvil
-  if (Math.random() > probabilidad) {
-    createShootingStar();
-  }
-}, esMobile ? 5000 : 4000);
