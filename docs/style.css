@@ -1,5 +1,5 @@
 /* ============================================
-   ESTILOS GLOBALES Y RESET
+   ESTILOS GLOBALES
    ============================================ */
 
 * {
@@ -12,22 +12,20 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: #020111;
 }
 
 body {
-  height: 100vh;
-  height: 100dvh;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Ancla el contenido al fondo */
-  background: #020111; /* Color base sólido para evitar parpadeos blancos */
-  background: linear-gradient(to top, #020111 0%, #19163a 100%) !important;
-  font-family: 'Montserrat', sans-serif;
+  align-items: flex-end; /* Alinea al fondo */
+  background: linear-gradient(to top, #020111 0%, #0d1b2a 100%) !important;
+  font-family: 'Poppins', sans-serif;
   position: relative;
 }
 
 /* ============================================
-   FONDO DE ESTRELLAS (CORREGIDO PARA MÓVIL)
+   ESTRELLAS NÍTIDAS
    ============================================ */
 
 #stars {
@@ -36,105 +34,98 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
-  background-image:
-    radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.5;
-  animation: twinkle 4s infinite alternate;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
+  background-image: 
+    radial-gradient(1px 1px at 25px 35px, white, rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 50px 80px, white, rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 90px 150px, white, rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 150px 200px, white, rgba(255,255,255,0)),
+    radial-gradient(1.5px 1.5px at 200px 50px, white, rgba(255,255,255,0)),
+    radial-gradient(1px 1px at 250px 120px, white, rgba(255,255,255,0));
+  background-size: 300px 300px;
+  opacity: 0.4;
+  animation: twinkle 3s infinite alternate;
 }
 
 @keyframes twinkle {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.7; }
+  from { opacity: 0.3; }
+  to { opacity: 0.6; }
 }
 
 /* ============================================
-   CONTENEDOR DEL GIRASOL (POSICIÓN FIJA AL FONDO)
+   GIRASOL ANCLADO ABAJO
    ============================================ */
 
 .sunflower-container {
-  position: relative;
+  position: absolute;
+  bottom: -20px; /* Un poco metido abajo para que no flote */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  bottom: 0;
-  transform-origin: bottom center;
-  animation: sway 10s ease-in-out infinite;
   z-index: 5;
+  animation: sway 8s ease-in-out infinite;
+  transform-origin: bottom center;
 }
 
 @keyframes sway {
-  0%, 100% { transform: rotate(1.5deg); }
-  50% { transform: rotate(-1.5deg); }
+  0%, 100% { transform: translateX(-50%) rotate(1deg); }
+  50% { transform: translateX(-50%) rotate(-1deg); }
 }
 
-/* ============================================
-   TALLO Y HOJAS
-   ============================================ */
-
 .stem {
-  width: 12px;
-  height: 350px;
-  background: linear-gradient(to right, #4a7d29, #6a9c40);
+  width: 15px;
+  height: 50vh; /* Tallo largo para que siempre llegue al fondo */
+  min-height: 300px;
+  background: linear-gradient(to right, #2d5a27, #4a7d29);
   border-radius: 10px 10px 0 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.5);
 }
 
 .leaf {
   position: absolute;
-  background: linear-gradient(to bottom right, #5a8c39, #8bc34a);
+  background: linear-gradient(to bottom right, #386626, #5a8c39);
   border-radius: 50% 0 50% 50%;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 }
 
 .leaf.leaf-1 {
-  width: 60px;
-  height: 80px;
-  bottom: 180px;
-  left: -50px;
-  transform: rotate(15deg);
+  width: 70px;
+  height: 90px;
+  bottom: 200px;
+  left: -55px;
+  transform: rotate(20deg);
 }
 
 .leaf.leaf-2 {
-  width: 50px;
-  height: 70px;
-  bottom: 100px;
-  right: -45px;
-  transform: rotate(-15deg) scaleX(-1);
+  width: 60px;
+  height: 80px;
+  bottom: 120px;
+  right: -50px;
+  transform: rotate(-20deg) scaleX(-1);
 }
 
-/* ============================================
-   CABEZA DEL GIRASOL
-   ============================================ */
-
 .head {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   position: relative;
-  margin-bottom: -40px; /* Conecta con el tallo */
+  margin-bottom: -50px; /* Conecta con el tallo */
   z-index: 10;
 }
 
 .center {
   width: 100px;
   height: 100px;
-  background: radial-gradient(ellipse at center, #6b4a2f 0%, #4a301a 100%);
+  background: radial-gradient(circle, #4a301a 0%, #2a1a0a 100%);
   border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 20;
-  box-shadow: inset 0 0 15px #2a1a0a, 0 0 15px rgba(255, 215, 0, 0.3);
+  box-shadow: inset 0 0 10px #000;
 }
 
 /* ============================================
@@ -146,60 +137,60 @@ body {
   left: 50%;
   top: 50%;
   transform-origin: bottom center;
-  box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
-  border: 1px solid #ffc800;
+  border: 1px solid #d4af37;
 }
 
-.petal-back { width: 50px; height: 120px; background: linear-gradient(to top, #e6b800, #ffd700); z-index: 11; border-radius: 50% 50% 0 0; }
-.petal-middle { width: 40px; height: 100px; background: linear-gradient(to top, #ffcc00, #ffea80); z-index: 12; border-radius: 50% 50% 0 0; }
-.petal-front { width: 30px; height: 85px; background: linear-gradient(to top, #ffd700, #fff2b2); z-index: 13; border-radius: 50% 50% 0 0; }
+.petal-back { width: 55px; height: 130px; background: #ffc107; z-index: 11; border-radius: 50% 50% 0 0; }
+.petal-middle { width: 45px; height: 110px; background: #ffca28; z-index: 12; border-radius: 50% 50% 0 0; }
+.petal-front { width: 35px; height: 90px; background: #ffd54f; z-index: 13; border-radius: 50% 50% 0 0; }
 
-.petal.clickable { cursor: pointer; transition: transform 0.2s; }
-.petal.clickable:hover { transform: translate(-50%, -100%) scale(1.05); }
-
+.petal.clickable { cursor: pointer; }
 .petal.falling {
-  animation: fallAndFade 2.5s ease-in forwards;
+  animation: fallAndFade 2s ease-in forwards;
   pointer-events: none;
 }
 
 @keyframes fallAndFade {
-  100% {
-    transform: translateY(80vh) rotate(var(--original-rotate, 0deg)) rotateZ(180deg);
+  to {
+    transform: translateY(100vh) rotate(180deg);
     opacity: 0;
   }
 }
 
 /* ============================================
-   TEXTOS Y DEDICATORIA
+   TEXTOS Y DEDICATORIA (LEGIBILIDAD MÁXIMA)
    ============================================ */
 
 .dedication {
   position: fixed;
-  bottom: 25px;
+  bottom: 40px;
   left: 0;
   width: 100%;
   text-align: center;
-  font-family: 'Great Vibes', cursive;
-  font-size: 28px;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.5);
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.8);
   z-index: 30;
-  padding: 0 10px;
+  padding: 0 20px;
+  letter-spacing: 0.5px;
 }
 
 .floating-phrase {
   position: absolute;
-  font-family: 'Great Vibes', cursive;
-  font-size: 24px;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffd54f;
+  text-shadow: 2px 2px 5px rgba(0,0,0,1);
   pointer-events: none;
-  animation: floatUp 3s ease-out forwards;
+  animation: floatUp 2.5s ease-out forwards;
   z-index: 40;
 }
 
 @keyframes floatUp {
-  to { transform: translate(-50%, -100px); opacity: 0; }
+  to { transform: translate(-50%, -120px); opacity: 0; }
 }
 
 #final-message {
@@ -208,53 +199,56 @@ body {
   left: 0;
   width: 100%;
   text-align: center;
-  font-family: 'Great Vibes', cursive;
-  font-size: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
   color: #ff4081;
-  text-shadow: 0 0 10px rgba(255,255,255,0.8), 2px 2px 5px rgba(0,0,0,0.5);
+  text-shadow: 0 0 15px rgba(255,255,255,0.8), 2px 2px 5px rgba(0,0,0,1);
   display: none;
   z-index: 50;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  padding: 0 20px;
 }
 
 .reset-btn {
   position: fixed;
-  bottom: 80px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 10px 20px;
+  padding: 12px 24px;
   background: #ff4081;
   color: white;
   border: none;
-  border-radius: 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: bold;
+  border-radius: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
   cursor: pointer;
   display: none;
   z-index: 60;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* ============================================
-   RESPONSIVIDAD MÓVIL (CORRECCIONES)
+   AJUSTES PARA MÓVILES
    ============================================ */
 
-@media (max-width: 600px) {
-  .stem { height: 280px; width: 10px; }
-  .head { transform: scale(0.8); margin-bottom: -50px; }
-  .leaf.leaf-1 { width: 45px; height: 65px; left: -40px; bottom: 140px; }
-  .leaf.leaf-2 { width: 40px; height: 60px; right: -35px; bottom: 80px; }
-  
-  .dedication { font-size: 22px; bottom: 20px; }
-  #final-message { font-size: 30px; top: 15%; }
-  
-  /* Asegura que el contenedor no flote */
+@media (max-width: 480px) {
   .sunflower-container {
-    bottom: -10px; /* Pequeño ajuste para que parezca salir del suelo */
+    bottom: -10px;
+    transform: translateX(-50%) scale(0.85);
+  }
+  
+  .stem {
+    height: 45vh;
+  }
+
+  .dedication {
+    font-size: 18px;
+    bottom: 30px;
+  }
+
+  #final-message {
+    font-size: 22px;
   }
 }
 
