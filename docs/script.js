@@ -1,3 +1,6 @@
+/* ============================================
+   CONFIGURACIÓN Y VARIABLES GLOBALES
+   ============================================ */
 
 const phrases = [
     "Eres mi sol.",
@@ -15,53 +18,17 @@ const phrases = [
 ];
 
 let phraseIndex = 0;
+let petalCount = 0;
+let totalPetals = 12; // Número de pétalos frontales
 
-function detachPetal(event) {
-    const petal = event.currentTarget;
-    if (petal.classList.contains('falling')) return;
-
-    const computedStyle = window.getComputedStyle(petal);
-    petal.style.setProperty('--original-rotate', computedStyle.transform);
-    petal.classList.add('falling');
-
-    const phrase = document.createElement('div');
-    phrase.classList.add('floating-phrase');
-    phrase.textContent = phrases[phraseIndex % phrases.length];
-    phraseIndex++;
-    phrase.style.left = `${event.clientX}px`;
-    phrase.style.top = `${event.clientY}px`;
-    document.body.appendChild(phrase);
-
-    petal.addEventListener('animationend', () => petal.remove());
-    phrase.addEventListener('animationend', () => phrase.remove());
-}
-
-function createPetals() {
-    const head = document.querySelector('.head');
-    const layers = [
-        { count: 16, className: 'petal-back', offset: 0 },
-        { count: 16, className: 'petal-middle', offset: 11.25 },
-        { count: 12, className: 'petal-front', offset: 15 }
-    ];
-    layers.forEach(layer => {
-        for (let i = 0; i < layer.count; i++) {
-            const petal = document.createElement('div');
-            petal.classList.add('petal', layer.className);
-            const angle = (360 / layer.count) * i + layer.offset;
-            petal.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
-            if (layer.className === 'petal-front') {
-                petal.classList.add('clickable');
-                petal.addEventListener('click', detachPetal);
-            }
-            head.appendChild(petal);
-        }
-    });
-}
+/* ============================================
+   CANVAS Y PARTÍCULAS
+   ============================================ */
 
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
-
 const centerDiv = document.querySelector('.center');
+
 canvas.width = centerDiv.clientWidth;
 canvas.height = centerDiv.clientHeight;
 
@@ -93,7 +60,7 @@ class Particle {
         ctx.closePath();
     }
 }
-   
+
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particlesArray.length; i++) {
@@ -105,58 +72,245 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-function createShootingStar() {
-  const star = document.createElement("div");
-  star.classList.add("shooting-star");
-  star.style.left = Math.random() * window.innerWidth + "px";
-  document.body.appendChild(star);
+/* ============================================
+   CREACIÓN DE PÉTALOS
+   ============================================ */
 
-  star.addEventListener("animationend", () => star.remove());
+function createPetals() {
+    const head = document.querySelector('.head');
+    const layers = [
+        { count: 16, className: 'petal-back', offset: 0 },
+        { count: 16, className: 'petal-middle', offset: 11.25 },
+        { count: 12, className: 'petal-front', offset: 15 }
+    ];
+
+    layers.forEach(layer => {
+        for (let i = 0; i < layer.count; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal', layer.className);
+            const angle = (360 / layer.count) * i + layer.offset;
+            petal.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+            
+            if (layer.className === 'petal-front') {
+                petal.classList.add('clickable');
+                petal.addEventListener('click', detachPetal);
+            }
+            
+            head.appendChild(petal);
+        }
+    });
+
+    // Contar pétalos frontales
+    petalCount = document.querySelectorAll('.petal-front').length;
 }
 
-// Cada cierto tiempo aparece una estrella fugaz
-setInterval(() => {
-  if (Math.random() > 0.7) { // probabilidad del 30%
-    createShootingStar();
-  }
-}, 4000);
+/* ============================================
+   DESPRENDIMIENTO DE PÉTALOS
+   ============================================ */
 
-// Controlar volumen de YouTube con API
-let tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-let firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function detachPetal(event) {
+    const petal = event.currentTarget;
+    if (petal.classList.contains('falling')) return;
 
-let player;
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player('ytplayer', {
-    events: {
-      onReady: (event) => {
-        event.target.setVolume(20); // volumen al 20%
-      }
+    // Reproducir sonido de pétalo (opcional)
+    playPetalSound();
+
+    const computedStyle = window.getComputedStyle(petal);
+    petal.style.setProperty('--original-rotate', computedStyle.transform);
+    petal.classList.add('falling');
+
+    // Crear frase flotante
+    const phrase = document.createElement('div');
+    phrase.classList.add('floating-phrase');
+    phrase.textContent = phrases[phraseIndex % phrases.length];
+    phraseIndex++;
+    phrase.style.left = `${event.clientX}px`;
+    phrase.style.top = `${event.clientY}px`;
+    document.body.appendChild(phrase);
+
+    // Crear partículas doradas
+    for (let i = 0; i < 5; i++) {
+        particlesArray.push(new Particle());
     }
-  });
+
+    petal.addEventListener('animationend', () => {
+        petal.remove();
+        checkFinalMessage();
+    }, { once: true });
+
+    phrase.addEventListener('animationend', () => phrase.remove(), { once: true });
 }
 
+/* ============================================
+   VERIFICAR MENSAJE FINAL
+   ============================================ */
 
+function checkFinalMessage() {
+    const remainingPetals = document.querySelectorAll('.petal-front:not(.falling)');
+    if (remainingPetals.length === 0) {
+        showFinalMessage();
+    }
+}
 
-window.onload = () => {
+function showFinalMessage() {
+    const finalMessage = document.getElementById('final-message');
+    const resetBtn = document.getElementById('reset-button');
+    
+    if (finalMessage) {
+        finalMessage.style.display = 'block';
+    }
+    
+    if (resetBtn) {
+        resetBtn.style.display = 'block';
+    }
+}
+
+/* ============================================
+   RENACER DEL GIRASOL
+   ============================================ */
+
+function resetSunflower() {
+    // Ocultar mensajes
+    const finalMessage = document.getElementById('final-message');
+    const resetBtn = document.getElementById('reset-button');
+    
+    if (finalMessage) finalMessage.style.display = 'none';
+    if (resetBtn) resetBtn.style.display = 'none';
+
+    // Remover todos los pétalos que cayeron
+    document.querySelectorAll('.petal').forEach(petal => petal.remove());
+
+    // Reiniciar contador
+    phraseIndex = 0;
+
+    // Recrear pétalos
     createPetals();
 
+    // Reproducir sonido de renacer (opcional)
+    playRebirthSound();
+}
+
+// Event listener para el botón de renacer
+document.addEventListener('DOMContentLoaded', () => {
+    const resetBtn = document.getElementById('reset-button');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetSunflower);
+    }
+});
+
+/* ============================================
+   ESTRELLAS FUGACES
+   ============================================ */
+
+function createShootingStar() {
+    const star = document.createElement('div');
+    star.classList.add('shooting-star');
+    star.style.left = Math.random() * window.innerWidth + 'px';
+    document.body.appendChild(star);
+
+    star.addEventListener('animationend', () => star.remove(), { once: true });
+}
+
+// Crear estrellas fugaces cada cierto tiempo
+setInterval(() => {
+    if (Math.random() > 0.7) { // 30% de probabilidad
+        createShootingStar();
+    }
+}, 4000);
+
+/* ============================================
+   EFECTOS DE SONIDO (Opcional)
+   ============================================ */
+
+function playPetalSound() {
+    // Crear un sonido simple usando Web Audio API
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+        // Silenciosamente ignorar si Web Audio API no está disponible
+    }
+}
+
+function playRebirthSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99]; // DO, MI, SOL
+
+        notes.forEach((freq, index) => {
+            setTimeout(() => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            }, index * 100);
+        });
+    } catch (e) {
+        // Silenciosamente ignorar si Web Audio API no está disponible
+    }
+}
+
+/* ============================================
+   INICIALIZACIÓN
+   ============================================ */
+
+window.addEventListener('load', () => {
+    createPetals();
+
+    // Crear partículas continuamente
     setInterval(() => {
         for (let i = 0; i < 3; i++) {
             particlesArray.push(new Particle());
         }
     }, 300);
 
+    // Iniciar animación del canvas
     animate();
-    
-};
+});
 
-   
+/* ============================================
+   REDIMENSIONAMIENTO DEL CANVAS
+   ============================================ */
 
+window.addEventListener('resize', () => {
+    const centerDiv = document.querySelector('.center');
+    canvas.width = centerDiv.clientWidth;
+    canvas.height = centerDiv.clientHeight;
+});
 
-if (!document.querySelector('.petal-front')) {
-  document.getElementById('final-message').style.display = 'block';
-}
+/* ============================================
+   ACCESIBILIDAD - SOPORTE PARA TECLADO
+   ============================================ */
 
+document.addEventListener('keydown', (e) => {
+    // Presionar 'R' para renacer el girasol
+    if (e.key === 'r' || e.key === 'R') {
+        const resetBtn = document.getElementById('reset-button');
+        if (resetBtn && resetBtn.style.display !== 'none') {
+            resetSunflower();
+        }
+    }
+});
