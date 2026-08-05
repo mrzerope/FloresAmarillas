@@ -1,3 +1,18 @@
+/* ============================================
+   ESTILOS GLOBALES Y RESET
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -5,83 +20,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  background: linear-gradient(to top, #a1d4f5 0%, #d5eaf5 60%, #ffffff 100%);
-  overflow: hidden;
-  font-family: 'Playfair Display', serif;
-  transition: background 1s ease;
-
-}
-
-
-body.night-mode {
   background: linear-gradient(to top, #020111 0%, #19163a 70%);
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  transition: background 1s ease;
+  position: relative;
 }
 
-
-/* Ajustes generales */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Dancing Script', cursive;
-  overflow-x: hidden; /* Evita scroll lateral */
-  background: linear-gradient(to bottom, #0d1b2a, #1b263b); /* noche */
+/* Modo día (opcional para futuras mejoras) */
+body.day-mode {
+  background: linear-gradient(to top, #a1d4f5 0%, #d5eaf5 60%, #ffffff 100%);
 }
 
-/* Frases flotantes */
-. {
-  position: absolute;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  white-space: nowrap;
-  pointer-events: none;
-  text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
-  animation: floatUp 3s ease-out forwards;
-}
-
-/* Animación frases */
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to   { transform: translateY(-80px); opacity: 0; }
-}
-
-/* Texto fijo al pie */
-footer {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-size: 18px;
-  text-align: center;
-  text-shadow: -2px -2px 3px #000, 2px -2px 3px #000, -2px 2px 3px #000, 2px 2px 3px #000;
-}
-
-/* Girasol responsivo */
-canvas {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  height: auto !important;
-}
-
-/* 🌐 Ajustes para móviles */
-@media (max-width: 768px) {
-  .floating-phrase {
-    font-size: 16px; /* frases más chicas en móvil */
-  }
-
-  footer {
-    font-size: 14px;
-    bottom: 5px;
-    padding: 0 10px;
-  }
-
-  canvas {
-    width: 90% !important; /* girasol más pequeño y centrado */
-  }
-}
+/* ============================================
+   FONDO DE ESTRELLAS
+   ============================================ */
 
 #stars {
   position: fixed;
@@ -97,51 +50,25 @@ canvas {
     radial-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1) 2px, transparent 30px);
   background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
   background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+  opacity: 0.8;
+  animation: twinkle 5s infinite alternate, moveStars 60s linear infinite;
   z-index: -1;
-}
-
-body.night-mode #stars {
-  opacity: 1;
-  animation: twinkle 5s infinite alternate;
+  pointer-events: none;
 }
 
 @keyframes twinkle {
-  0% { opacity: 0.7; }
+  0% { opacity: 0.5; }
   100% { opacity: 1; }
 }
 
-body.night-mode .floating-phrase {
-  color: #e0e0e0;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+@keyframes moveStars {
+  from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
+  to { background-position: -500px -500px, -460px -440px, -370px -230px, -430px -400px; }
 }
 
-#night-mode-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background-color: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  font-family: sans-serif;
-  font-size: 14px;
-  z-index: 100;
-  transition: all 0.3s ease;
-}
-
-#night-mode-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.8);
-  transform: scale(1.05);
-}
-
-body.night-mode #night-mode-toggle {
-  background-color: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: white;
-}
+/* ============================================
+   CONTENEDOR DEL GIRASOL
+   ============================================ */
 
 .sunflower-container {
   position: relative;
@@ -149,16 +76,28 @@ body.night-mode #night-mode-toggle {
   animation: sway 12s ease-in-out infinite, fadeIn 2s ease forwards;
   transform-origin: bottom center;
   opacity: 0;
+  z-index: 10;
 }
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+}
+
+/* Pausa la animación al pasar el ratón (solo en pantallas con hover) */
 @media (hover: hover) {
   .sunflower-container:hover {
     animation-play-state: paused;
   }
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
+/* ============================================
+   TALLO Y HOJAS
+   ============================================ */
 
 .stem {
   width: 15px;
@@ -169,6 +108,7 @@ body.night-mode #night-mode-toggle {
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .leaf {
@@ -194,6 +134,10 @@ body.night-mode #night-mode-toggle {
   transform: rotate(-10deg) scaleX(-1);
 }
 
+/* ============================================
+   CABEZA DEL GIRASOL
+   ============================================ */
+
 .head {
   width: 250px;
   height: 250px;
@@ -213,15 +157,13 @@ body.night-mode #night-mode-toggle {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  box-shadow: inset 0 0 15px #2a1a0a;
-
-  /* efecto brillo */
+  box-shadow: inset 0 0 15px #2a1a0a, 0 0 20px rgba(255, 215, 0, 0.3);
   animation: glow 3s infinite alternate;
 }
 
 @keyframes glow {
   0% { box-shadow: inset 0 0 15px #2a1a0a, 0 0 10px rgba(255,215,0,0.2); }
-  100% { box-shadow: inset 0 0 25px #2a1a0a, 0 0 20px rgba(255,215,0,0.5); }
+  100% { box-shadow: inset 0 0 25px #2a1a0a, 0 0 25px rgba(255,215,0,0.5); }
 }
 
 .center::before {
@@ -237,6 +179,10 @@ body.night-mode #night-mode-toggle {
   background-position: 0 0, 5px 5px;
   opacity: 0.3;
 }
+
+/* ============================================
+   PÉTALOS
+   ============================================ */
 
 .petal {
   position: absolute;
@@ -277,36 +223,57 @@ body.night-mode #night-mode-toggle {
 }
 
 .petal.clickable:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.15) drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
 }
 
-.floating-phrase {
-  font-family: 'Poppins', sans-serif;
+.petal.falling {
+  animation: fallAndFade 2.5s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes fallAndFade {
+  0% { transform-origin: bottom center; }
+  100% {
+    transform: translateY(80vh) rotate(var(--original-rotate, 0deg)) rotateZ(180deg);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   CANVAS DE PARTÍCULAS
+   ============================================ */
+
+#particle-canvas {
   position: absolute;
-  color: #fff; /* letras blancas */
-  font-size: 22px;
-  font-style: italic;
-  font-weight: bold;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ============================================
+   FRASES FLOTANTES
+   ============================================ */
+
+.floating-phrase {
+  font-family: 'Great Vibes', cursive;
+  position: absolute;
+  color: #fff;
+  font-size: 26px;
+  font-weight: 400;
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
   animation: floatUp 4s ease-out forwards;
-
-  /* 👇 contorno negro más nítido */
-  -webkit-text-stroke: 1px #000; /* borde negro real */
+  -webkit-text-stroke: 0.5px #000;
   text-shadow: 
     -1px -1px 0 #000,
      1px -1px 0 #000,
     -1px  1px 0 #000,
      1px  1px 0 #000,
-     0    0   6px rgba(255,255,255,0.6); /* brillito extra */
-}
-
-
-
-.petal.falling {
-  animation: fallAndFade 2.5s ease-in forwards;
-  pointer-events: none;
+     0    0   8px rgba(255,255,255,0.7);
+  z-index: 20;
 }
 
 @keyframes floatUp {
@@ -320,70 +287,44 @@ body.night-mode #night-mode-toggle {
   }
 }
 
-@keyframes fallAndFade {
-  0% { transform-origin: bottom center; }
-  100% {
-    transform: translateY(80vh) rotate(var(--original-rotate, 0deg)) rotateZ(180deg);
-    opacity: 0;
-  }
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(3deg); }
-  50% { transform: rotate(-3deg); }
-}
-
-#particle-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+/* ============================================
+   DEDICATORIA
+   ============================================ */
 
 .dedication {
   position: fixed;
-  font-family: 'Poppins', sans-serif;
-  bottom: 20px;
-  font-size: 24px;
-  font-style: italic;
-  font-weight: bold;
-  color: #ffffff;
+  font-family: 'Great Vibes', cursive;
+  bottom: 30px;
+  font-size: 32px;
+  font-weight: 400;
+  color: #f5e7c6;
   text-align: center;
   width: 100%;
-  padding: 0 10px;
-  text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.7);
+  padding: 0 20px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.5);
+  z-index: 15;
+  letter-spacing: 1px;
 }
 
-
-body.night-mode .dedication {
-  color: #f5e7c6;
-  text-shadow: 0 0 6px rgba(255,255,255,0.4);
-}
-
-@media (max-width: 480px) {
-  .floating-phrase {
-    font-size: 18px;
-  }
-
-  .dedication {
-    font-size: 20px;
-  }
-}
+/* ============================================
+   MENSAJE FINAL
+   ============================================ */
 
 #final-message {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Great Vibes', cursive;
   display: none;
   position: fixed;
-  top: 10%;
+  top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 23px;
+  font-size: 48px;
+  font-weight: 400;
   color: #fff;
-  text-shadow: 0 0 15px #ff4081, 0 0 25px #ff80ab;
+  text-shadow: 0 0 15px #ff4081, 0 0 25px #ff80ab, 0 0 40px rgba(255, 64, 129, 0.5);
   text-align: center;
   animation: pulse 2s infinite;
+  z-index: 25;
+  letter-spacing: 2px;
 }
 
 @keyframes pulse {
@@ -391,17 +332,43 @@ body.night-mode .dedication {
   50% { transform: translate(-50%, -50%) scale(1.1); }
 }
 
-body.night-mode #stars {
-  opacity: 1;
-  animation: twinkle 5s infinite alternate, moveStars 60s linear infinite;
+/* ============================================
+   BOTÓN DE RENACER
+   ============================================ */
+
+.reset-btn {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4081, #ff80ab);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  z-index: 25;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
 }
 
-@keyframes moveStars {
-  from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
-  to { background-position: -500px -500px, -460px -440px, -370px -230px, -430px -400px; }
+.reset-btn:hover {
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
 }
 
-/* Estrella fugaz */
+.reset-btn:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+/* ============================================
+   ESTRELLA FUGAZ
+   ============================================ */
+
 .shooting-star {
   position: fixed;
   width: 2px;
@@ -413,6 +380,7 @@ body.night-mode #stars {
   transform: rotate(45deg);
   animation: shooting 2s linear forwards;
   z-index: 5;
+  pointer-events: none;
 }
 
 @keyframes shooting {
@@ -420,11 +388,208 @@ body.night-mode #stars {
   100% { transform: translate(-400px, 800px) rotate(45deg); opacity: 0; }
 }
 
+/* ============================================
+   RESPONSIVIDAD - TABLETS
+   ============================================ */
 
+@media (max-width: 768px) {
+  .sunflower-container {
+    bottom: 0;
+  }
 
+  .head {
+    width: 200px;
+    height: 200px;
+    bottom: 300px;
+  }
 
+  .stem {
+    height: 320px;
+  }
 
+  .center {
+    width: 100px;
+    height: 100px;
+  }
 
+  .petal-back {
+    width: 50px;
+    height: 110px;
+  }
 
+  .petal-middle {
+    width: 42px;
+    height: 95px;
+  }
 
+  .petal-front {
+    width: 32px;
+    height: 80px;
+  }
 
+  .leaf.leaf-1 {
+    width: 60px;
+    height: 75px;
+    bottom: 150px;
+    left: 20px;
+  }
+
+  .leaf.leaf-2 {
+    width: 55px;
+    height: 70px;
+    bottom: 80px;
+    left: 110px;
+  }
+
+  .floating-phrase {
+    font-size: 20px;
+  }
+
+  .dedication {
+    font-size: 24px;
+    bottom: 20px;
+  }
+
+  #final-message {
+    font-size: 36px;
+    top: 20%;
+  }
+
+  .reset-btn {
+    font-size: 14px;
+    padding: 10px 25px;
+    bottom: 80px;
+  }
+}
+
+/* ============================================
+   RESPONSIVIDAD - MÓVILES
+   ============================================ */
+
+@media (max-width: 480px) {
+  body {
+    align-items: center;
+  }
+
+  .sunflower-container {
+    bottom: -30px;
+    transform: scale(0.75);
+  }
+
+  .head {
+    width: 160px;
+    height: 160px;
+    bottom: 240px;
+  }
+
+  .stem {
+    height: 260px;
+    width: 12px;
+  }
+
+  .center {
+    width: 80px;
+    height: 80px;
+  }
+
+  .petal-back {
+    width: 40px;
+    height: 90px;
+  }
+
+  .petal-middle {
+    width: 34px;
+    height: 76px;
+  }
+
+  .petal-front {
+    width: 26px;
+    height: 64px;
+  }
+
+  .leaf.leaf-1 {
+    width: 48px;
+    height: 60px;
+    bottom: 120px;
+    left: 15px;
+  }
+
+  .leaf.leaf-2 {
+    width: 44px;
+    height: 56px;
+    bottom: 60px;
+    left: 88px;
+  }
+
+  .floating-phrase {
+    font-size: 16px;
+    -webkit-text-stroke: 0.3px #000;
+  }
+
+  .dedication {
+    font-size: 18px;
+    bottom: 15px;
+    padding: 0 15px;
+  }
+
+  #final-message {
+    font-size: 28px;
+    top: 25%;
+    padding: 0 20px;
+  }
+
+  .reset-btn {
+    font-size: 12px;
+    padding: 8px 20px;
+    bottom: 60px;
+  }
+}
+
+/* ============================================
+   RESPONSIVIDAD - MÓVILES PEQUEÑOS
+   ============================================ */
+
+@media (max-width: 360px) {
+  .sunflower-container {
+    transform: scale(0.65);
+  }
+
+  .floating-phrase {
+    font-size: 14px;
+  }
+
+  .dedication {
+    font-size: 16px;
+  }
+
+  #final-message {
+    font-size: 24px;
+  }
+
+  .reset-btn {
+    font-size: 11px;
+    padding: 6px 18px;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .sunflower-container,
+  .center,
+  .floating-phrase,
+  #final-message,
+  .reset-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Modo oscuro del sistema */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(to top, #020111 0%, #19163a 70%);
+  }
+}
