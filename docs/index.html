@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>🌻 Para mi Sol 🌻</title>
+  
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Una página especial dedicada a alguien especial con un girasol animado interactivo.">
-  <meta name="theme-color" content="#020111">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
-  <!-- Google Fonts - Tipografía Premium -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
 </head>
@@ -35,48 +32,35 @@
     <div class="leaf leaf-2"></div>
   </div>
 
-  <!-- Dedicatoria principal -->
-  <div class="dedication" id="dedication-main">Para ti, mi girasol 🌻❤️</div>
+  <!-- Dedicatoria -->
+  <div class="dedication">Para ti, mi girasol 🌻❤️</div>
 
-  <!-- Mensaje final (aparece cuando todos los pétalos caen) -->
+  <!-- Mensaje final -->
   <div id="final-message">Te amo con todo mi corazón 💖</div>
 
-  <!-- Botón para renacer el girasol -->
-  <button id="reset-button" class="reset-btn" title="Hacer florecer el girasol de nuevo">
-    🌱 Florecer de Nuevo
-  </button>
+  <!-- Botón para renacer -->
+  <button id="reset-button" class="reset-btn">🌱 Florecer de Nuevo</button>
 
-  <!-- Audio de fondo (música suave) -->
-  <audio id="bg-music" autoplay loop hidden>
+  <!-- Audio de fondo -->
+  <audio id="bg-music" loop hidden>
     <source src="ambiente.mp3" type="audio/mpeg">
     Tu navegador no soporta audio HTML5.
   </audio>
 
-  <!-- Script principal -->
   <script src="script.js"></script>
-
-  <!-- Script para reproducir música al interactuar -->
+  
   <script>
-    window.addEventListener('click', () => {
+    // Activar audio al primer toque
+    const startAudio = () => {
       const music = document.getElementById('bg-music');
-      music.volume = 0.2; // Volumen al 20% para no molestar
-      if (music.paused) {
-        music.play().catch(err => console.log('Audio no disponible:', err));
-      }
-    });
-
-    // Permitir reproducción de audio con tecla de espacio
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        const music = document.getElementById('bg-music');
-        if (music.paused) {
-          music.play().catch(err => console.log('Audio no disponible:', err));
-        } else {
-          music.pause();
-        }
-      }
-    });
+      music.volume = 0.3;
+      music.play().catch(() => {});
+      document.removeEventListener('click', startAudio);
+      document.removeEventListener('touchstart', startAudio);
+    };
+    
+    document.addEventListener('click', startAudio);
+    document.addEventListener('touchstart', startAudio);
   </script>
 
 </body>
