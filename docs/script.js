@@ -226,13 +226,36 @@ function inicializarEstrellas() {
     if (starsBig) starsBig.style.boxShadow = generarEstrellas(cantidadGrandes);
 }
 
+function inicializarLuciérnagas() {
+    const layer = document.getElementById('fireflies');
+    if (!layer) return;
+
+    layer.replaceChildren();
+    const cantidad = window.innerWidth < 480 ? 12 : 18;
+
+    for (let i = 0; i < cantidad; i++) {
+        const firefly = document.createElement('span');
+        firefly.className = 'firefly';
+        firefly.style.left = `${8 + Math.random() * 84}%`;
+        firefly.style.top = `${28 + Math.random() * 60}%`;
+        firefly.style.setProperty('--fly-duration', `${4 + Math.random() * 4}s`);
+        firefly.style.setProperty('--fly-delay', `${Math.random() * -6}s`);
+        firefly.style.setProperty('--fly-x', `${Math.round((Math.random() - 0.5) * 34)}px`);
+        layer.appendChild(firefly);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', inicializarEstrellas);
+document.addEventListener('DOMContentLoaded', inicializarLuciérnagas);
 
 // Regenerar si cambia el tamaño de pantalla (rotación de móvil, etc.)
 let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(inicializarEstrellas, 300);
+    resizeTimeout = setTimeout(() => {
+        inicializarEstrellas();
+        inicializarLuciérnagas();
+    }, 300);
 });
 
 /* ============================================
