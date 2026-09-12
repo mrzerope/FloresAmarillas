@@ -113,7 +113,10 @@ function detachPetal(event) {
     if (petal.classList.contains('falling')) return;
 
     const welcomeMessage = document.querySelector('.welcome-message');
-    if (welcomeMessage) welcomeMessage.classList.add('is-hidden');
+    if (welcomeMessage) {
+        welcomeMessage.classList.add('is-hidden');
+        welcomeMessage.setAttribute('aria-hidden', 'true');
+    }
 
     // Reproducir sonido de pétalo (opcional)
     playPetalSound();
@@ -181,7 +184,10 @@ function resetSunflower() {
     if (resetBtn) resetBtn.style.display = 'none';
 
     const welcomeMessage = document.querySelector('.welcome-message');
-    if (welcomeMessage) welcomeMessage.classList.remove('is-hidden');
+    if (welcomeMessage) {
+        welcomeMessage.classList.remove('is-hidden');
+        welcomeMessage.removeAttribute('aria-hidden');
+    }
 
     // Remover todos los pétalos que cayeron
     document.querySelectorAll('.petal').forEach(petal => petal.remove());
