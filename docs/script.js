@@ -243,7 +243,7 @@ function inicializarLuciérnagas() {
     if (!layer) return;
 
     layer.replaceChildren();
-    const cantidad = window.innerWidth < 480 ? 12 : 18;
+    const cantidad = window.innerWidth < 480 ? 18 : 26;
 
     for (let i = 0; i < cantidad; i++) {
         const firefly = document.createElement('span');
@@ -282,6 +282,7 @@ function createShootingStar() {
 
     star.addEventListener('animationend', () => star.remove(), { once: true });
 }
+
 setInterval(() => {
     const esMobile = window.innerWidth < 480;
     const probabilidad = esMobile ? 0.5 : 0.7; // menos frecuente en móvil
