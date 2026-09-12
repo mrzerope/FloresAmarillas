@@ -1,409 +1,387 @@
 /* ============================================
-   ESTILOS GLOBALES
+   CONFIGURACIÓN Y VARIABLES GLOBALES
    ============================================ */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+
+const phrases = [
+    "Eres mi sol.",
+    "Mi vida brilla contigo.",
+    "Mi lugar favorito es a tu lado.",
+    "Eres mi paz y mi locura.",
+    "Juntos somos magia.",
+    "Te elijo cada día.",
+    "Nuestro amor es mi refugio.",
+    "Cada día contigo es un regalo.",
+    "A tu lado, soy más fuerte.",
+    "Para siempre y un día más.",
+    "El mundo es perfecto contigo.",
+    "A tu lado, todo florece."
+];
+
+let phraseIndex = 0;
+let petalCount = 0;
+let totalPetals = 12; // Número de pétalos frontales
+
+/* ============================================
+   CANVAS Y PARTÍCULAS
+   ============================================ */
+
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+const centerDiv = document.querySelector('.center');
+
+canvas.width = centerDiv.clientWidth;
+canvas.height = centerDiv.clientHeight;
+
+let particlesArray = [];
+
+class Particle {
+    constructor() {
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = (Math.random() - 0.5) * 1.5;
+        this.size = Math.random() * 3 + 1;
+        this.life = 100;
+        this.maxLife = 100;
+    }
+
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life -= 1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.globalAlpha = this.life / this.maxLife;
+        ctx.fillStyle = '#ffd700';
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+    }
 }
-html, body {
-  width: 100%;
-  height: 100%;
-  min-height: 100dvh;
-  overflow: hidden;
-  background-color: #020111;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end; /* Alinea al fondo */
-  background: linear-gradient(to top, #020111 0%, #0d1b2a 100%) !important;
-  font-family: 'Poppins', sans-serif;
-  position: relative;
-  isolation: isolate;
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+    particlesArray = particlesArray.filter(p => p.life > 0);
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(animate);
 }
 
 /* ============================================
-   CAMPO DE ESTRELLAS (generado por JS)
+   CREACIÓN DE PÉTALOS
    ============================================ */
-#stars {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  background: transparent;
-  z-index: 1;
-  pointer-events: none;
-  animation: twinkle 3s infinite alternate;
-}
-#stars-big {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: transparent;
-  z-index: 1;
-  pointer-events: none;
-  animation: twinkle 4s infinite alternate-reverse;
-}
-.moon {
-  position: fixed;
-  top: clamp(54px, 10vh, 100px);
-  left: 50%;
-  width: clamp(76px, 22vw, 112px);
-  aspect-ratio: 1;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 36% 32%, #fffde7 0 15%, #ffe082 58%, #ffca55 100%);
-  box-shadow: 0 0 18px rgba(255, 224, 130, 0.65), 0 0 58px rgba(255, 193, 7, 0.24);
-  opacity: 0.92;
-  z-index: 2;
-  pointer-events: none;
-  animation: moonGlow 5s ease-in-out infinite alternate;
-}
-.moon::after {
-  content: '';
-  position: absolute;
-  inset: 15%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 25% 35%, rgba(255,255,255,.28) 0 8%, transparent 9%),
-              radial-gradient(circle at 70% 65%, rgba(190, 140, 45, .16) 0 11%, transparent 12%);
-}
-@keyframes moonGlow {
-  from { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(0.98); }
-  to { opacity: 1; transform: translateX(-50%) translateY(-7px) scale(1.03); }
-}
-.cloud {
-  position: fixed;
-  width: clamp(92px, 26vw, 150px);
-  height: clamp(20px, 6vw, 32px);
-  border-radius: 999px;
-  background: rgba(131, 157, 190, 0.13);
-  filter: blur(1px);
-  z-index: 2;
-  pointer-events: none;
-  animation: cloudDrift 16s ease-in-out infinite alternate;
-}
-.cloud::before,
-.cloud::after {
-  content: '';
-  position: absolute;
-  bottom: 35%;
-  border-radius: 50%;
-  background: inherit;
-}
-.cloud::before { left: 18%; width: 42%; height: 125%; }
-.cloud::after { right: 14%; width: 34%; height: 100%; }
-.cloud-left { top: 17%; left: -24px; }
-.cloud-right { top: 31%; right: -35px; transform: scale(.72); animation-delay: -7s; }
-@keyframes cloudDrift {
-  from { margin-left: -8px; opacity: .35; }
-  to { margin-left: 12px; opacity: .7; }
-}
-#fireflies {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-.firefly {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ffe76a;
-  box-shadow: 0 0 8px 3px rgba(255, 220, 80, .72);
-  animation: fireflyFloat var(--fly-duration, 5s) ease-in-out infinite alternate;
-  animation-delay: var(--fly-delay, 0s);
-}
-@keyframes fireflyFloat {
-  from { opacity: .2; transform: translate3d(0, 8px, 0) scale(.7); }
-  to { opacity: 1; transform: translate3d(var(--fly-x, 10px), -18px, 0) scale(1.2); }
-}
-@keyframes twinkle {
-  from { opacity: 0.3; }
-  to { opacity: 0.6; }
+
+function createPetals() {
+    const head = document.querySelector('.head');
+    const layers = [
+        { count: 16, className: 'petal-back', offset: 0 },
+        { count: 16, className: 'petal-middle', offset: 11.25 },
+        { count: 12, className: 'petal-front', offset: 15 }
+    ];
+
+    layers.forEach(layer => {
+        for (let i = 0; i < layer.count; i++) {
+            const petal = document.createElement('div');
+            petal.classList.add('petal', layer.className);
+            const angle = (360 / layer.count) * i + layer.offset;
+            petal.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+            
+            if (layer.className === 'petal-front') {
+                petal.classList.add('clickable');
+                petal.addEventListener('click', detachPetal);
+            }
+            
+            head.appendChild(petal);
+        }
+    });
+
+    // Contar pétalos frontales
+    petalCount = document.querySelectorAll('.petal-front').length;
 }
 
 /* ============================================
-   ESTRELLAS FUGACES
+   DESPRENDIMIENTO DE PÉTALOS
    ============================================ */
-.shooting-star {
-  position: fixed;
-  top: -10px;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(to bottom, white, transparent);
-  z-index: 2;
-  border-radius: 50%;
-  animation: shootDown 1.1s linear forwards;
-  pointer-events: none;
-}
-@keyframes shootDown {
-  0%   { transform: translateY(0) translateX(0) rotate(20deg); opacity: 1; }
-  100% { transform: translateY(100vh) translateX(120px) rotate(20deg); opacity: 0; }
+
+function detachPetal(event) {
+    const petal = event.currentTarget;
+    if (petal.classList.contains('falling')) return;
+
+    const welcomeMessage = document.querySelector('.welcome-message');
+    if (welcomeMessage) welcomeMessage.classList.add('is-hidden');
+
+    // Reproducir sonido de pétalo (opcional)
+    playPetalSound();
+
+    const computedStyle = window.getComputedStyle(petal);
+    petal.style.setProperty('--original-rotate', computedStyle.transform);
+    petal.classList.add('falling');
+
+    // Crear frase flotante
+    const phrase = document.createElement('div');
+    phrase.classList.add('floating-phrase');
+    phrase.textContent = phrases[phraseIndex % phrases.length];
+    phraseIndex++;
+    phrase.style.left = `${event.clientX}px`;
+    phrase.style.top = `${event.clientY}px`;
+    document.body.appendChild(phrase);
+
+    // Crear partículas doradas
+    for (let i = 0; i < 5; i++) {
+        particlesArray.push(new Particle());
+    }
+
+    petal.addEventListener('animationend', () => {
+        petal.remove();
+        checkFinalMessage();
+    }, { once: true });
+
+    phrase.addEventListener('animationend', () => phrase.remove(), { once: true });
 }
 
 /* ============================================
-   GIRASOL ANCLADO ABAJO
+   VERIFICAR MENSAJE FINAL
    ============================================ */
-.sunflower-container {
-  position: absolute;
-  bottom: -20px; /* Un poco metido abajo para que no flote */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 5;
-  animation: sway 8s ease-in-out infinite;
-  transform-origin: bottom center;
+
+function checkFinalMessage() {
+    const remainingPetals = document.querySelectorAll('.petal-front:not(.falling)');
+    if (remainingPetals.length === 0) {
+        showFinalMessage();
+    }
 }
-@keyframes sway {
-  0%, 100% { transform: translateX(-50%) rotate(1deg); }
-  50% { transform: translateX(-50%) rotate(-1deg); }
-}
-.stem {
-  width: 15px;
-  height: 50vh; /* Tallo largo para que siempre llegue al fondo */
-  min-height: 300px;
-  background: linear-gradient(to right, #2d5a27, #4a7d29);
-  border-radius: 10px 10px 0 0;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.5);
-}
-.leaf {
-  position: absolute;
-  background: linear-gradient(to bottom right, #386626, #5a8c39);
-  border-radius: 50% 0 50% 50%;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-}
-.leaf.leaf-1 {
-  width: 70px;
-  height: 90px;
-  bottom: 35vh;
-  left: 55px;
-  transform: rotate(20deg);
-}
-.leaf.leaf-2 {
-  width: 60px;
-  height: 80px;
-  bottom: 20vh;
-  right: 55px;
-  transform: rotate(-20deg) scaleX(-1);
-}
-.head {
-  width: 220px;
-  height: 220px;
-  position: relative;
-  margin-bottom: -50px; /* Conecta con el tallo */
-  z-index: 10;
-}
-.center {
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, #4a301a 0%, #2a1a0a 100%);
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 20;
-  box-shadow: inset 0 0 10px #000;
+
+function showFinalMessage() {
+    const finalMessage = document.getElementById('final-message');
+    const resetBtn = document.getElementById('reset-button');
+    
+    if (finalMessage) {
+        finalMessage.style.display = 'block';
+    }
+    
+    if (resetBtn) {
+        resetBtn.style.display = 'block';
+    }
 }
 
 /* ============================================
-   PÉTALOS
+   RENACER DEL GIRASOL
    ============================================ */
-.petal {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform-origin: bottom center;
-  border: 1px solid rgba(255, 224, 130, 0.6); /* antes: #d4af37 */
+
+function resetSunflower() {
+    // Ocultar mensajes
+    const finalMessage = document.getElementById('final-message');
+    const resetBtn = document.getElementById('reset-button');
+    
+    if (finalMessage) finalMessage.style.display = 'none';
+    if (resetBtn) resetBtn.style.display = 'none';
+
+    const welcomeMessage = document.querySelector('.welcome-message');
+    if (welcomeMessage) welcomeMessage.classList.remove('is-hidden');
+
+    // Remover todos los pétalos que cayeron
+    document.querySelectorAll('.petal').forEach(petal => petal.remove());
+
+    // Reiniciar contador
+    phraseIndex = 0;
+
+    // Recrear pétalos
+    createPetals();
+
+    // Reproducir sonido de renacer (opcional)
+    playRebirthSound();
 }
-.petal-back {
-  width: 55px;
-  height: 130px;
-  background: linear-gradient(to bottom, #ffdb4d, #ffb300);
-  z-index: 11;
-  border-radius: 50% 50% 0 0;
+
+// Event listener para el botón de renacer
+document.addEventListener('DOMContentLoaded', () => {
+    const resetBtn = document.getElementById('reset-button');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetSunflower);
+    }
+});
+
+/* ============================================
+   CAMPO DE ESTRELLAS (optimizado móvil)
+   ============================================ */
+
+function generarEstrellas(cantidad) {
+    let sombras = [];
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    for (let i = 0; i < cantidad; i++) {
+        const x = Math.floor(Math.random() * w);
+        const y = Math.floor(Math.random() * h);
+        sombras.push(`${x}px ${y}px white`);
+    }
+    return sombras.join(',');
 }
-.petal-middle {
-  width: 45px;
-  height: 110px;
-  background: linear-gradient(to bottom, #ffe066, #ffc107);
-  z-index: 12;
-  border-radius: 50% 50% 0 0;
+
+function inicializarEstrellas() {
+    const esMobile = window.innerWidth < 480;
+    const cantidadPequeñas = esMobile ? 80 : 150;
+    const cantidadGrandes = esMobile ? 25 : 45;
+
+    const stars = document.getElementById('stars');
+    const starsBig = document.getElementById('stars-big');
+
+    if (stars) stars.style.boxShadow = generarEstrellas(cantidadPequeñas);
+    if (starsBig) starsBig.style.boxShadow = generarEstrellas(cantidadGrandes);
 }
-.petal-front {
-  width: 35px;
-  height: 90px;
-  background: linear-gradient(to bottom, #fff176, #ffd54f);
-  z-index: 13;
-  border-radius: 50% 50% 0 0;
+
+function inicializarLuciérnagas() {
+    const layer = document.getElementById('fireflies');
+    if (!layer) return;
+
+    layer.replaceChildren();
+    const cantidad = window.innerWidth < 480 ? 12 : 18;
+
+    for (let i = 0; i < cantidad; i++) {
+        const firefly = document.createElement('span');
+        firefly.className = 'firefly';
+        firefly.style.left = `${8 + Math.random() * 84}%`;
+        firefly.style.top = `${28 + Math.random() * 60}%`;
+        firefly.style.setProperty('--fly-duration', `${4 + Math.random() * 4}s`);
+        firefly.style.setProperty('--fly-delay', `${Math.random() * -6}s`);
+        firefly.style.setProperty('--fly-x', `${Math.round((Math.random() - 0.5) * 34)}px`);
+        layer.appendChild(firefly);
+    }
 }
-.petal.clickable {
-  cursor: pointer;
-  touch-action: manipulation;
+
+document.addEventListener('DOMContentLoaded', inicializarEstrellas);
+document.addEventListener('DOMContentLoaded', inicializarLuciérnagas);
+
+// Regenerar si cambia el tamaño de pantalla (rotación de móvil, etc.)
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        inicializarEstrellas();
+        inicializarLuciérnagas();
+    }, 300);
+});
+
+/* ============================================
+   ESTRELLAS FUGACES (con límite para móvil)
+   ============================================ */
+
+function createShootingStar() {
+    const star = document.createElement('div');
+    star.classList.add('shooting-star');
+    star.style.left = Math.random() * window.innerWidth + 'px';
+    document.body.appendChild(star);
+
+    star.addEventListener('animationend', () => star.remove(), { once: true });
 }
-.petal.falling {
-  animation: fallAndFade 2s ease-in forwards;
-  pointer-events: none;
+
+setInterval(() => {
+    const esMobile = window.innerWidth < 480;
+    const probabilidad = esMobile ? 0.5 : 0.7; // menos frecuente en móvil
+    if (Math.random() > probabilidad) {
+        createShootingStar();
+    }
+}, window.innerWidth < 480 ? 5000 : 4000);
+
+/* ============================================
+   EFECTOS DE SONIDO (Opcional)
+   ============================================ */
+
+function playPetalSound() {
+    // Crear un sonido simple usando Web Audio API
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+        // Silenciosamente ignorar si Web Audio API no está disponible
+    }
 }
-@keyframes fallAndFade {
-  to {
-    transform: translateY(100vh) rotate(180deg);
-    opacity: 0;
-  }
+
+function playRebirthSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [523.25, 659.25, 783.99]; // DO, MI, SOL
+
+        notes.forEach((freq, index) => {
+            setTimeout(() => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            }, index * 100);
+        });
+    } catch (e) {
+        // Silenciosamente ignorar si Web Audio API no está disponible
+    }
 }
 
 /* ============================================
-   TEXTOS Y DEDICATORIA (LEGIBILIDAD MÁXIMA)
+   INICIALIZACIÓN
    ============================================ */
-.dedication {
-  position: fixed;
-  bottom: 40px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 5px rgba(0,0,0,0.8);
-  z-index: 30;
-  padding: 0 20px;
-  letter-spacing: 0.5px;
-}
-.welcome-message {
-  position: fixed;
-  top: clamp(172px, 23vh, 230px);
-  left: 50%;
-  width: min(88vw, 360px);
-  transform: translateX(-50%);
-  color: #fff8d6;
-  text-align: center;
-  text-shadow: 0 2px 10px rgba(0,0,0,.8);
-  z-index: 30;
-  pointer-events: none;
-  animation: welcomeBreath 4s ease-in-out infinite;
-}
-.welcome-message.is-hidden {
-  animation: welcomeFadeOut 0.55s ease forwards;
-  pointer-events: none;
-}
-.welcome-message span,
-.welcome-message small {
-  display: block;
-}
-.welcome-message span {
-  font-size: clamp(18px, 5vw, 24px);
-  font-weight: 900;
-}
-.welcome-message small {
-  margin-top: 4px;
-  font-size: clamp(12px, 3.4vw, 15px);
-  font-weight: 400;
-  color: #ffe9a6;
-}
-@keyframes welcomeBreath {
-  0%, 100% { opacity: .78; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 1; transform: translateX(-50%) translateY(-4px); }
-}
-@keyframes welcomeFadeOut {
-  from { opacity: 1; transform: translateX(-50%) translateY(0); }
-  to { opacity: 0; transform: translateX(-50%) translateY(-12px); visibility: hidden; }
-}
-.floating-phrase {
-  position: absolute;
-  font-family: 'Poppins', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffd54f;
-  text-shadow: 2px 2px 5px rgba(0,0,0,1);
-  pointer-events: none;
-  animation: floatUp 2.5s ease-out forwards;
-  z-index: 40;
-}
-@keyframes floatUp {
-  to { transform: translate(-50%, -120px); opacity: 0; }
-}
-#final-message {
-  position: fixed;
-  top: 20%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  font-size: 26px;
-  font-weight: 900;
-  color: #ff4081;
-  text-shadow: 0 0 15px rgba(255,255,255,0.8), 2px 2px 5px rgba(0,0,0,1);
-  display: none;
-  z-index: 50;
-  padding: 0 20px;
-}
-.reset-btn {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 12px 24px;
-  background: #ff4081;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  display: none;
-  z-index: 60;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+
+window.addEventListener('load', () => {
+    createPetals();
+
+    const esMobile = window.innerWidth < 480;
+    const intervaloParticulas = esMobile ? 500 : 300;
+    const cantidadParticulas = esMobile ? 2 : 3;
+
+    // Crear partículas continuamente
+    setInterval(() => {
+        for (let i = 0; i < cantidadParticulas; i++) {
+            particlesArray.push(new Particle());
+        }
+    }, intervaloParticulas);
+
+    // Iniciar animación del canvas
+    animate();
+});
 
 /* ============================================
-   AJUSTES PARA MÓVILES
+   REDIMENSIONAMIENTO DEL CANVAS
    ============================================ */
-@media (max-width: 480px) {
-  .sunflower-container {
-    bottom: -10px;
-    transform: translateX(-50%) scale(0.85);
-  }
-  .stem {
-    height: 45vh;
-  }
-  .leaf.leaf-1 { bottom: 32vh; left: 45px; }
-  .leaf.leaf-2 { bottom: 18vh; right: 45px; }
-  .dedication {
-    font-size: 18px;
-    bottom: calc(24px + env(safe-area-inset-bottom));
-  }
-  #final-message {
-    font-size: 22px;
-  }
-  .shooting-star {
-    height: 45px;
-  }
-  .welcome-message {
-    top: clamp(160px, 22vh, 205px);
-  }
-  .sunflower-container {
-    bottom: calc(-10px - env(safe-area-inset-bottom));
-  }
-  .reset-btn {
-    bottom: calc(86px + env(safe-area-inset-bottom));
-  }
-}
 
-#particle-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+window.addEventListener('resize', () => {
+    const centerDiv = document.querySelector('.center');
+    canvas.width = centerDiv.clientWidth;
+    canvas.height = centerDiv.clientHeight;
+});
+
+/* ============================================
+   ACCESIBILIDAD - SOPORTE PARA TECLADO
+   ============================================ */
+
+document.addEventListener('keydown', (e) => {
+    // Presionar 'R' para renacer el girasol
+    if (e.key === 'r' || e.key === 'R') {
+        const resetBtn = document.getElementById('reset-button');
+        if (resetBtn && resetBtn.style.display !== 'none') {
+            resetSunflower();
+        }
+    }
+});
