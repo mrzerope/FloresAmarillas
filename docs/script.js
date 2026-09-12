@@ -282,7 +282,6 @@ function createShootingStar() {
 
     star.addEventListener('animationend', () => star.remove(), { once: true });
 }
-
 setInterval(() => {
     const esMobile = window.innerWidth < 480;
     const probabilidad = esMobile ? 0.5 : 0.7; // menos frecuente en móvil
