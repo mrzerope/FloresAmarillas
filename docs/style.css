@@ -145,6 +145,49 @@ body {
   z-index: 3;
   pointer-events: none;
 }
+#bee-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+.floating-bee {
+  position: absolute;
+  display: block;
+  font-size: clamp(22px, 6vw, 34px);
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .3));
+  will-change: transform;
+  animation: beeFlight var(--bee-duration, 11s) ease-in-out infinite;
+}
+.bee-one {
+  top: 36%;
+  left: -12%;
+  --bee-duration: 12s;
+  animation-delay: -2s;
+}
+.bee-two {
+  top: 48%;
+  right: -12%;
+  --bee-duration: 14s;
+  animation-delay: -8s;
+  transform: scaleX(-1);
+}
+.bee-three {
+  top: 60%;
+  left: 12%;
+  --bee-duration: 16s;
+  animation-delay: -11s;
+  font-size: clamp(18px, 5vw, 28px);
+}
+@keyframes beeFlight {
+  0% { transform: translate3d(-12vw, 8px, 0) rotate(-8deg); }
+  22% { transform: translate3d(25vw, -18px, 0) rotate(7deg); }
+  48% { transform: translate3d(52vw, 14px, 0) rotate(-5deg); }
+  72% { transform: translate3d(78vw, -12px, 0) rotate(8deg); }
+  100% { transform: translate3d(116vw, 8px, 0) rotate(-6deg); }
+}
 .firefly {
   position: absolute;
   width: 5px;
