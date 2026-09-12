@@ -85,6 +85,7 @@ body {
   z-index: 5;
   animation: sway 8s ease-in-out infinite;
   transform-origin: bottom center;
+  will-change: transform;
 }
 @keyframes sway {
   0%, 100% { transform: translateX(-50%) rotate(1deg); }
@@ -145,8 +146,11 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform-origin: bottom center;
+  transform: translate3d(-50%, -100%, 0) rotate(var(--petal-angle, 0deg));
+  transform-origin: 50% 90%;
   border: 1px solid rgba(255, 224, 130, 0.6); /* antes: #d4af37 */
+  backface-visibility: hidden;
+  will-change: transform, opacity, filter;
 }
 .petal-back {
   width: 55px;
@@ -171,13 +175,41 @@ body {
 }
 .petal.clickable { cursor: pointer; }
 .petal.falling {
-  animation: fallAndFade 2s ease-in forwards;
+  animation: fallAndFade var(--fall-duration, 3.8s) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   pointer-events: none;
 }
 @keyframes fallAndFade {
-  to {
-    transform: translateY(100vh) rotate(180deg);
+  0% {
+    transform: translate3d(-50%, -100%, 0) rotate(var(--petal-angle, 0deg)) scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  18% {
+    transform: translate3d(calc(-50% + var(--fall-sway, 18px)), calc(-100% + 14vh), 0)
+      rotate(calc(var(--petal-angle, 0deg) + var(--fall-rotate, 90deg) * 0.18)) scale(1.02);
+  }
+  52% {
+    transform: translate3d(calc(-50% + var(--fall-x, 0px) * 0.55), calc(-100% + 54vh), 0)
+      rotate(calc(var(--petal-angle, 0deg) + var(--fall-rotate, 90deg) * 0.55)) scale(0.96);
+  }
+  78% {
+    transform: translate3d(calc(-50% + var(--fall-x, 0px) * 0.9), calc(-100% + 82vh), 0)
+      rotate(calc(var(--petal-angle, 0deg) + var(--fall-rotate, 90deg) * 0.82)) scale(0.9);
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate3d(calc(-50% + var(--fall-x, 0px)), calc(-100% + 112vh), 0)
+      rotate(calc(var(--petal-angle, 0deg) + var(--fall-rotate, 90deg))) scale(0.78);
     opacity: 0;
+    filter: brightness(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
