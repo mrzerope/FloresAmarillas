@@ -9,6 +9,7 @@
 html, body {
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
   overflow: hidden;
   background-color: #020111;
 }
@@ -19,6 +20,7 @@ body {
   background: linear-gradient(to top, #020111 0%, #0d1b2a 100%) !important;
   font-family: 'Poppins', sans-serif;
   position: relative;
+  isolation: isolate;
 }
 
 /* ============================================
@@ -46,6 +48,80 @@ body {
   z-index: 1;
   pointer-events: none;
   animation: twinkle 4s infinite alternate-reverse;
+}
+.moon {
+  position: fixed;
+  top: clamp(54px, 10vh, 100px);
+  left: 50%;
+  width: clamp(76px, 22vw, 112px);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #fffde7 0 15%, #ffe082 58%, #ffca55 100%);
+  box-shadow: 0 0 18px rgba(255, 224, 130, 0.65), 0 0 58px rgba(255, 193, 7, 0.24);
+  opacity: 0.92;
+  z-index: 2;
+  pointer-events: none;
+  animation: moonGlow 5s ease-in-out infinite alternate;
+}
+.moon::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 25% 35%, rgba(255,255,255,.28) 0 8%, transparent 9%),
+              radial-gradient(circle at 70% 65%, rgba(190, 140, 45, .16) 0 11%, transparent 12%);
+}
+@keyframes moonGlow {
+  from { opacity: 0.8; transform: translateX(-50%) scale(0.98); }
+  to { opacity: 1; transform: translateX(-50%) scale(1.03); }
+}
+.cloud {
+  position: fixed;
+  width: clamp(92px, 26vw, 150px);
+  height: clamp(20px, 6vw, 32px);
+  border-radius: 999px;
+  background: rgba(131, 157, 190, 0.13);
+  filter: blur(1px);
+  z-index: 2;
+  pointer-events: none;
+  animation: cloudDrift 16s ease-in-out infinite alternate;
+}
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  bottom: 35%;
+  border-radius: 50%;
+  background: inherit;
+}
+.cloud::before { left: 18%; width: 42%; height: 125%; }
+.cloud::after { right: 14%; width: 34%; height: 100%; }
+.cloud-left { top: 17%; left: -24px; }
+.cloud-right { top: 31%; right: -35px; transform: scale(.72); animation-delay: -7s; }
+@keyframes cloudDrift {
+  from { margin-left: -8px; opacity: .35; }
+  to { margin-left: 12px; opacity: .7; }
+}
+#fireflies {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.firefly {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ffe76a;
+  box-shadow: 0 0 8px 3px rgba(255, 220, 80, .72);
+  animation: fireflyFloat var(--fly-duration, 5s) ease-in-out infinite alternate;
+  animation-delay: var(--fly-delay, 0s);
+}
+@keyframes fireflyFloat {
+  from { opacity: .2; transform: translate3d(0, 8px, 0) scale(.7); }
+  to { opacity: 1; transform: translate3d(var(--fly-x, 10px), -18px, 0) scale(1.2); }
 }
 @keyframes twinkle {
   from { opacity: 0.3; }
@@ -169,7 +245,10 @@ body {
   z-index: 13;
   border-radius: 50% 50% 0 0;
 }
-.petal.clickable { cursor: pointer; }
+.petal.clickable {
+  cursor: pointer;
+  touch-action: manipulation;
+}
 .petal.falling {
   animation: fallAndFade 2s ease-in forwards;
   pointer-events: none;
@@ -198,6 +277,37 @@ body {
   z-index: 30;
   padding: 0 20px;
   letter-spacing: 0.5px;
+}
+.welcome-message {
+  position: fixed;
+  top: clamp(172px, 23vh, 230px);
+  left: 50%;
+  width: min(88vw, 360px);
+  transform: translateX(-50%);
+  color: #fff8d6;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,.8);
+  z-index: 30;
+  pointer-events: none;
+  animation: welcomeBreath 4s ease-in-out infinite;
+}
+.welcome-message span,
+.welcome-message small {
+  display: block;
+}
+.welcome-message span {
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 900;
+}
+.welcome-message small {
+  margin-top: 4px;
+  font-size: clamp(12px, 3.4vw, 15px);
+  font-weight: 400;
+  color: #ffe9a6;
+}
+@keyframes welcomeBreath {
+  0%, 100% { opacity: .78; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 }
 .floating-phrase {
   position: absolute;
@@ -262,13 +372,22 @@ body {
   .leaf.leaf-2 { bottom: 18vh; right: 45px; }
   .dedication {
     font-size: 18px;
-    bottom: 30px;
+    bottom: calc(24px + env(safe-area-inset-bottom));
   }
   #final-message {
     font-size: 22px;
   }
   .shooting-star {
     height: 45px;
+  }
+  .welcome-message {
+    top: clamp(160px, 22vh, 205px);
+  }
+  .sunflower-container {
+    bottom: calc(-10px - env(safe-area-inset-bottom));
+  }
+  .reset-btn {
+    bottom: calc(86px + env(safe-area-inset-bottom));
   }
 }
 
