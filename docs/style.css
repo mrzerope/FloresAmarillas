@@ -73,8 +73,8 @@ body {
               radial-gradient(circle at 70% 65%, rgba(190, 140, 45, .16) 0 11%, transparent 12%);
 }
 @keyframes moonGlow {
-  from { opacity: 0.8; transform: translateX(-50%) scale(0.98); }
-  to { opacity: 1; transform: translateX(-50%) scale(1.03); }
+  from { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(0.98); }
+  to { opacity: 1; transform: translateX(-50%) translateY(-7px) scale(1.03); }
 }
 .cloud {
   position: fixed;
@@ -290,6 +290,14 @@ body {
   z-index: 30;
   pointer-events: none;
   animation: welcomeBreath 4s ease-in-out infinite;
+}
+.welcome-message.is-hidden {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-12px);
+  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s linear 0.45s;
+  pointer-events: none;
 }
 .welcome-message span,
 .welcome-message small {
