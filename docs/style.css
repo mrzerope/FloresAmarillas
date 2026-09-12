@@ -240,14 +240,14 @@ body {
 .center {
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle, #4a301a 0%, #2a1a0a 100%);
+  background: radial-gradient(circle, #5a3c1d 0%, #30200e 100%);
   border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 20;
-  box-shadow: inset 0 0 10px #000;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.82);
 }
 
 /* ============================================
@@ -258,26 +258,26 @@ body {
   left: 50%;
   top: 50%;
   transform-origin: bottom center;
-  border: 1px solid rgba(255, 224, 130, 0.6); /* antes: #d4af37 */
+  border: 1px solid rgba(227, 183, 80, 0.45);
 }
 .petal-back {
   width: 55px;
   height: 130px;
-  background: linear-gradient(to bottom, #ffdb4d, #ffb300);
+  background: linear-gradient(to bottom, #d9aa32, #b87918);
   z-index: 11;
   border-radius: 50% 50% 0 0;
 }
 .petal-middle {
   width: 45px;
   height: 110px;
-  background: linear-gradient(to bottom, #ffe066, #ffc107);
+  background: linear-gradient(to bottom, #e0b543, #c58a20);
   z-index: 12;
   border-radius: 50% 50% 0 0;
 }
 .petal-front {
   width: 35px;
   height: 90px;
-  background: linear-gradient(to bottom, #fff176, #ffd54f);
+  background: linear-gradient(to bottom, #edc75c, #d5a33b);
   z-index: 13;
   border-radius: 50% 50% 0 0;
 }
