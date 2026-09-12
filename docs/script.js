@@ -89,8 +89,7 @@ function createPetals() {
             const petal = document.createElement('div');
             petal.classList.add('petal', layer.className);
             const angle = (360 / layer.count) * i + layer.offset;
-            petal.style.setProperty('--petal-angle', `${angle}deg`);
-            petal.style.transform = `translate3d(-50%, -100%, 0) rotate(${angle}deg)`;
+            petal.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
             
             if (layer.className === 'petal-front') {
                 petal.classList.add('clickable');
@@ -116,15 +115,8 @@ function detachPetal(event) {
     // Reproducir sonido de pétalo (opcional)
     playPetalSound();
 
-    const fallDistance = Math.round(window.innerWidth * (0.22 + Math.random() * 0.28));
-    const sway = Math.round((Math.random() - 0.5) * 70);
-    const duration = (3.2 + Math.random() * 1.4).toFixed(2);
-    const rotation = Math.round((Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 260));
-
-    petal.style.setProperty('--fall-x', `${fallDistance}px`);
-    petal.style.setProperty('--fall-sway', `${sway}px`);
-    petal.style.setProperty('--fall-duration', `${duration}s`);
-    petal.style.setProperty('--fall-rotate', `${rotation}deg`);
+    const computedStyle = window.getComputedStyle(petal);
+    petal.style.setProperty('--original-rotate', computedStyle.transform);
     petal.classList.add('falling');
 
     // Crear frase flotante
